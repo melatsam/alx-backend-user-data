@@ -1,30 +1,70 @@
-0x01-Basic_Authentication
+# 0x0. Basic authentication
 
-what is authentication ?
+## Description
 
-Authentication is the process of determining if the request
-has come from a valid user who has the required privileges
-to use the system.
+What you should learn from this project:
 
-What  is Base64?
+* What authentication means
+* What Base64 is
+* How to encode a string in Base64
+* What Basic authentication means
+* How to send the Authorization header
 
-In Python the base64 module is used to encode and decode data.
- First, the strings are converted into byte-like objects and 
- then encoded using the base64 module.
+---
 
-What Basic authentication?
+### [0. Simple-basic-API](./api/v1/app.py)
 
-Authentication refers to giving a user permissions to access a particular resource. 
-Since, everyone can’t be allowed to access data from every URL, one would require authentication primarily.
- To achieve this authentication, typically one provides authentication data through Authorization header or
- a custom header defined by serve
+* Download and start your project from this archive.zip
 
- How to send the Authorization header?
+### [1. Error handler: Unauthorized](./api/v1/app.py)
 
-Basic Auth is one of the many HTTP authorization technique used to 
-validate access to a HTTP endpoint.
-Understanding Basic Auth is very simple, the user requesting the access
-to an endpoint has to provide either,
+* What the HTTP status code for a request unauthorized? 401 of course!
 
-1,Username and password as credentials in the API call (or)
-2,Basic authorization token as credentials in the request header
+### [2. Error handler: Forbidden](./api/v1/auth)
+
+* What the HTTP status code for a request where the user is authenticate but not allowed to access to a resource? 403 of course!
+
+### [3. Auth class](./api/v1/auth/auth.py)
+
+* Now you will create a class to manage the API authentication.
+
+### [4. Define which routes don't need authentication](./api/v1/app.py)
+
+* Update the method def require_auth(self, path: str, excluded_paths: List[str]) -> bool: in Auth that returns True if the path is not in the list of strings excluded_paths:
+
+### [5. Request validation!](./api/v1/app.py)
+
+* Now you will validate all requests to secure the API:
+
+### [6. Basic auth](./api/v1/auth/basic_auth.py)
+
+* Create a class BasicAuth that inherits from Auth. For the moment this class will be empty.
+
+### [7. Basic - Base64 part](./api/v1/auth/basic_auth.py)
+
+* Add the method def extract_base64_authorization_header(self, authorization_header: str) -> str: in the class BasicAuth that returns the Base64 part of the Authorization header for a Basic Authentication:
+
+### [8. Basic - Base64 decode](./api/v1/auth/basic_auth.py)
+
+* Add the method def decode_base64_authorization_header(self, base64_authorization_header: str) -> str: in the class BasicAuth that returns the decoded value of a Base64 string base64_authorization_header:
+
+### [9. Basic - User credentials](./api/v1/auth/basic_auth.py)
+
+* Add the method def extract_user_credentials(self, decoded_base64_authorization_header: str) -> (str, str) in the class BasicAuth that returns the user email and password from the Base64 decoded value.
+
+### [10. Basic - User object](./api/v1/auth/basic_auth.py)
+
+* Add the method def user_object_from_credentials(self, user_email: str, user_pwd: str) -> TypeVar('User'): in the class BasicAuth that returns the User instance based on his email and password.
+
+### [11. Basic - Overload current_user - and BOOM!](./api/v1/auth/basic_auth.py)
+
+* Now, you have all pieces for having a complete Basic authentication.
+
+### [12. Basic - Allow password with ":"](./api/v1/auth/auth.py)
+
+* Improve the method def extract_user_credentials(self, decoded_base64_authorization_header) to allow password with :.
+
+---
+
+
+
